@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KICKTHREAD • Sneakers & Jerseys</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
+        
+        :root {
+            --primary: 234 179 8;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .logo-font {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .hero-bg {
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://picsum.photos/id/1015/2000/1200');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .product-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .product-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+        }
+
+        .nav-link {
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: rgb(234 179 8);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after {
+            width: 100%;
+        }
+
+        .cart-count {
+            animation: pop 0.3s ease;
+        }
+
+        @keyframes pop {
+            0% { transform: scale(0.8); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body class="bg-zinc-950 text-white">
+    <!-- HEADER -->
+    <header class="sticky top-0 z-50 bg-zinc-950 border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+            <div class="flex items-center gap-8">
+                <a href="#" class="flex items-center gap-3">
+                    <div class="w-9 h-9 bg-yellow-500 rounded-2xl flex items-center justify-center text-black font-bold text-2xl logo-font">K</div>
+                    <span class="text-3xl font-bold tracking-tighter logo-font">KICKTHREAD</span>
+                </a>
+                
+                <nav class="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a href="#" onclick="showCategory('all')" class="nav-link text-white hover:text-yellow-400">Shop All</a>
+                    <a href="#" onclick="showCategory('sneakers')" class="nav-link text-white hover:text-yellow-400">Sneakers</a>
+                    <a href="#" onclick="showCategory('jerseys')" class="nav-link text-white hover:text-yellow-400">Jerseys</a>
+                    <a href="#" class="nav-link text-white hover:text-yellow-400">New Drops</a>
+                </nav>
+            </div>
+
+            <div class="flex items-center gap-6">
+                <div class="relative">
+                    <input type="text" id="search-input" 
+                           placeholder="Search sneakers or jerseys..." 
+                           class="bg-zinc-900 border border-zinc-700 rounded-full py-3 px-6 w-80 text-sm focus:outline-none focus:border-yellow-500 transition-colors"
+                           onkeyup="if(event.key === 'Enter') searchProducts()">
+                </div>
+                
+                <button onclick="toggleCart()" class="relative p-3 hover:bg-zinc-900 rounded-2xl transition-colors">
+                    <i class="fa-solid fa-bag-shopping text-2xl"></i>
+                    <span id="cart-count" class="cart-count absolute -top-1 -right-1 bg-yellow-500 text-black text-xs font-bold w-6 h-6 rounded-full flex items-center justify-center">0</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero-bg h-screen flex items-center relative">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-md px-6 py-2 rounded-full mb-6">
+                <span class="text-yellow-400">★</span>
+                <span class="text-sm tracking-widest font-medium">NEW SEASON JUST DROPPED</span>
+            </div>
+            <h1 class="text-7xl md:text-8xl font-bold logo-font tracking-tighter mb-4">
+                STEP UP YOUR GAME
+            </h1>
+            <p class="text-2xl text-zinc-300 max-w-2xl mx-auto mb-10">
+                Premium sneakers and official team jerseys. Fast shipping. Authenticity guaranteed.
+            </p>
+            <div class="flex gap-4 justify-center">
+                <button onclick="showCategory('sneakers')" 
+                        class="bg-white text-black px-10 py-4 rounded-2xl font-semibold hover:bg-yellow-400 transition-all flex items-center gap-3 text-lg">
+                    Shop Sneakers
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+                <button onclick="showCategory('jerseys')" 
+                        class="border border-white px-10 py-4 rounded-2xl font-semibold hover:bg-white hover:text-black transition-all text-lg">
+                    Browse Jerseys
+                </button>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 flex flex-col items-center">
+            <p class="text-xs tracking-widest mb-2">SCROLL TO EXPLORE</p>
+            <i class="fa-solid fa-chevron-down animate-bounce"></i>
+        </div>
+    </section>
+
+    <!-- CATEGORIES -->
+    <section class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-2 gap-8">
+            <div onclick="showCategory('sneakers')" class="group cursor-pointer relative overflow-hidden rounded-3xl h-96">
+                <img src="https://picsum.photos/id/1015/800/600" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                <div class="absolute bottom-10 left-10">
+                    <p class="text-yellow-400 text-sm tracking-widest">NEW ARRIVALS</p>
+                    <h3 class="text-5xl font-bold logo-font">SNEAKERS</h3>
+                </div>
+            </div>
+            
+            <div onclick="showCategory('jerseys')" class="group cursor-pointer relative overflow-hidden rounded-3xl h-96">
+                <img src="https://picsum.photos/id/201/800/600" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+                <div class="absolute bottom-10 left-10">
+                    <p class="text-yellow-400 text-sm tracking-widest">OFFICIAL GEAR</p>
+                    <h3 class="text-5xl font-bold logo-font">JERSEYS</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRODUCTS -->
+    <section class="max-w-7xl mx-auto px-6 pb-20" id="products-section">
+        <div class="flex items-center justify-between mb-10">
+            <h2 id="section-title" class="text-4xl font-bold logo-font">Featured Products</h2>
+            <div class="flex gap-3">
+                <button onclick="filterBy('all')" class="active-filter px-5 py-2 rounded-2xl text-sm border border-yellow-500 text-yellow-500">All</button>
+                <button onclick="filterBy('nike')" class="px-5 py-2 rounded-2xl text-sm hover:bg-zinc-900 transition-colors">Nike</button>
+                <button onclick="filterBy('adidas')" class="px-5 py-2 rounded-2xl text-sm hover:bg-zinc-900 transition-colors">Adidas</button>
+                <button onclick="filterBy('jordan')" class="px-5 py-2 rounded-2xl text-sm hover:bg-zinc-900 transition-colors">Jordan</button>
+            </div>
+        </div>
+
+        <div id="products-grid" class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <!-- Populated by JavaScript -->
+        </div>
+    </section>
+
+    <!-- PRODUCT MODAL -->
+    <div id="product-modal" class="hidden fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-6">
+        <div class="bg-zinc-900 max-w-4xl w-full rounded-3xl overflow-hidden">
+            <div class="flex">
+                <div class="w-1/2 bg-zinc-800 p-8" id="modal-image"></div>
+                <div class="w-1/2 p-8">
+                    <button onclick="closeModal()" class="float-right text-2xl">×</button>
+                    <h2 id="modal-name" class="text-3xl font-bold mb-2"></h2>
+                    <p id="modal-brand" class="text-yellow-400 font-medium"></p>
+                    
+                    <div class="flex items-center gap-4 my-6">
+                        <div id="modal-price" class="text-4xl font-bold"></div>
+                        <div class="text-green-400 text-sm">✓ In Stock</div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <p class="text-sm text-zinc-400 mb-2">SIZE</p>
+                        <div class="flex gap-3" id="size-options">
+                            <!-- JS populated -->
+                        </div>
+                    </div>
+                    
+                    <button onclick="addCurrentToCart()" 
+                            class="w-full bg-yellow-500 hover:bg-yellow-400 text-black py-5 rounded-2xl font-semibold text-lg transition-all">
+                        ADD TO CART - <span id="modal-price-btn"></span>
+                    </button>
+                    
+                    <p class="text-xs text-zinc-500 mt-8 leading-relaxed">
+                        Free shipping on orders over ₹5000 • 30-day easy returns • 100% Authentic products
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CART SIDEBAR -->
+    <div id="cart-sidebar" class="hidden fixed top-0 right-0 h-full w-full md:w-96 bg-zinc-900 shadow-2xl z-50 translate-x-full transition-transform duration-300">
+        <div class="p-6 border-b border-zinc-800 flex justify-between items-center">
+            <h3 class="text-2xl font-semibold">Your Cart</h3>
+            <button onclick="toggleCart()" class="text-3xl">×</button>
+        </div>
+        
+        <div id="cart-items" class="p-6 overflow-auto" style="height: calc(100vh - 220px)">
+            <!-- JS populated -->
+        </div>
+        
+        <div class="absolute bottom-0 w-full p-6 border-t border-zinc-800">
+            <div class="flex justify-between text-lg mb-6">
+                <span>Total</span>
+                <span id="cart-total" class="font-bold">₹0</span>
+            </div>
+            <button onclick="checkout()" 
+                    class="w-full bg-white text-black py-5 rounded-2xl font-semibold text-lg hover:bg-yellow-400 transition-colors">
+                PROCEED TO CHECKOUT
+            </button>
+            <p class="text-center text-xs text-zinc-500 mt-4">or 4 payments of ₹XXX with</p>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-20">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-12">
+            <div>
+                <div class="flex items-center gap-3 mb-6">
+                    <div class="w-8 h-8 bg-yellow-500 rounded-2xl flex items-center justify-center text-black font-bold text-xl">K</div>
+                    <span class="text-2xl font-bold logo-font">KICKTHREAD</span>
+                </div>
+                <p class="text-zinc-400">Premium streetwear and sports apparel delivered to your doorstep.</p>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Shop</h4>
+                <ul class="space-y-3 text-sm text-zinc-400">
+                    <li><a href="#" class="hover:text-white">Sneakers</a></li>
+                    <li><a href="#" class="hover:text-white">Jerseys</a></li>
+                    <li><a href="#" class="hover:text-white">New Releases</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Support</h4>
+                <ul class="space-y-3 text-sm text-zinc-400">
+                    <li><a href="#" class="hover:text-white">Track Order</a></li>
+                    <li><a href="#" class="hover:text-white">Returns</a></li>
+                    <li><a href="#" class="hover:text-white">Contact Us</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-semibold mb-4">Follow Us</h4>
+                <div class="flex gap-5 text-2xl">
+                    <i class="fa-brands fa-instagram cursor-pointer hover:text-yellow-400"></i>
+                    <i class="fa-brands fa-twitter cursor-pointer hover:text-yellow-400"></i>
+                    <i class="fa-brands fa-tiktok cursor-pointer hover:text-yellow-400"></i>
+                </div>
+            </div>
+        </div>
+        <div class="text-center text-xs text-zinc-500 mt-16">
+            © 2026 KickThread. Made with 🔥 for sneakerheads and sports fans.
+        </div>
+    </footer>
+
+    <script>
+        // Sample Products
+        let products = [
+            {
+                id: 1,
+                name: "Nike Air Force 1 '07",
+                brand: "Nike",
+                price: 8999,
+                category: "sneakers",
+                image: "https://picsum.photos/id/1015/600/600",
+                sizes: ["40", "41", "42", "43", "44"]
+            },
+            {
+                id: 2,
+                name: "Adidas Ultraboost 22",
+                brand: "Adidas",
+                price: 12999,
+                category: "sneakers",
+                image: "https://picsum.photos/id/201/600/600",
+                sizes: ["39", "40", "42", "43"]
+            },
+            {
+                id: 3,
+                name: "Air Jordan 1 Retro High",
+                brand: "Jordan",
+                price: 15999,
+                category: "sneakers",
+                image: "https://picsum.photos/id/251/600/600",
+                sizes: ["41", "42", "43", "44", "45"]
+            },
+            {
+                id: 4,
+                name: "Puma RS-X",
+                brand: "Puma",
+                price: 7499,
+                category: "sneakers",
+                image: "https://picsum.photos/id/301/600/600",
+                sizes: ["40", "41", "42"]
+            },
+            {
+                id: 5,
+                name: "LA Lakers Icon Jersey",
+                brand: "NBA",
+                price: 3499,
+                category: "jerseys",
+                image: "https://picsum.photos/id/401/600/600",
+                sizes: ["S", "M", "L", "XL"]
+            },
+            {
+                id: 6,
+                name: "Real Madrid Home 2025/26",
+                brand: "Adidas",
+                price: 4299,
+                category: "jerseys",
+                image: "https://picsum.photos/id/451/600/600",
+                sizes: ["S", "M", "L"]
+            },
+            {
+                id: 7,
+                name: "Golden State Warriors",
+                brand: "NBA",
+                price: 3299,
+                category: "jerseys",
+                image: "https://picsum.photos/id/501/600/600",
+                sizes: ["M", "L", "XL"]
+            },
+            {
+                id: 8,
+                name: "Nike Dunk Low",
+                brand: "Nike",
+                price: 10999,
+                category: "sneakers",
+                image: "https://picsum.photos/id/551/600/600",
+                sizes: ["40", "42", "43", "44"]
+            }
+        ];
+
+        let cart = [];
+
+        function renderProducts(filteredProducts) {
+            const container = document.getElementById('products-grid');
+            container.innerHTML = '';
+
+            filteredProducts.forEach(product => {
+                const card = `
+                    <div onclick="showProduct(${product.id})" class="product-card bg-zinc-900 rounded-3xl overflow-hidden cursor-pointer">
+                        <div class="relative">
+                            <img src="${product.image}" class="w-full h-64 object-cover">
+                            <div class="absolute top-4 right-4 bg-black/70 text-xs px-3 py-1 rounded-2xl">${product.brand}</div>
+                        </div>
+                        <div class="p-5">
+                            <h4 class="font-semibold text-lg leading-tight mb-1">${product.name}</h4>
+                            <p class="text-yellow-400 font-bold text-xl">₹${product.price.toLocaleString('en-IN')}</p>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += card;
+            });
+        }
+
+        function showProduct(id) {
+            const product = products.find(p => p.id === id);
+            if (!product) return;
+
+            document.getElementById('modal-name').textContent = product.name;
+            document.getElementById('modal-brand').textContent = product.brand;
+            document.getElementById('modal-price').innerHTML = `₹${product.price.toLocaleString('en-IN')}`;
+            document.getElementById('modal-price-btn').textContent = `₹${product.price.toLocaleString('en-IN')}`;
+            
+            const imageContainer = document.getElementById('modal-image');
+            imageContainer.innerHTML = `<img src="${product.image}" class="w-full h-full object-cover rounded-l-3xl">`;
+
+            // Size options
+            const sizesDiv = document.getElementById('size-options');
+            sizesDiv.innerHTML = '';
+            product.sizes.forEach(size => {
+                sizesDiv.innerHTML += `
+                    <button onclick="this.classList.toggle('bg-yellow-500'); this.classList.toggle('text-black')" 
+                            class="border border-zinc-700 hover:border-yellow-500 px-5 py-2 rounded-2xl text-sm transition-colors">
+                        ${size}
+                    </button>
+                `;
+            });
+
+            window.currentProduct = product;
+            document.getElementById('product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('product-modal').classList.add('hidden');
+        }
+
+        function addCurrentToCart() {
+            if (window.currentProduct) {
+                cart.push({...window.currentProduct});
+                updateCart();
+                closeModal();
+            }
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').textContent = cart.length;
+            
+            const container = document.getElementById('cart-items');
+            container.innerHTML = '';
+            
+            let total = 0;
+            
+            cart.forEach((item, index) => {
+                total += item.price;
+                container.innerHTML += `
+                    <div class="flex gap-4 mb-6">
+                        <img src="${item.image}" class="w-20 h-20 object-cover rounded-2xl">
+                        <div class="flex-1">
+                            <p class="font-medium leading-tight">${item.name}</p>
+                            <p class="text-sm text-zinc-400">${item.brand}</p>
+                            <p class="font-bold mt-1">₹${item.price}</p>
+                        </div>
+                        <button onclick="removeFromCart(${index})" class="text-red-400 text-xl">×</button>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('cart-total').textContent = `₹${total.toLocaleString('en-IN')}`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function toggleCart() {
+            const sidebar = document.getElementById('cart-sidebar');
+            sidebar.classList.toggle('hidden');
+            setTimeout(() => {
+                sidebar.classList.toggle('translate-x-full');
+            }, 10);
+        }
+
+        function checkout() {
+            if (cart.length === 0) return;
+            alert("🎉 Thank you for shopping at KickThread! This is a demo — your order has been placed.");
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        function showCategory(category) {
+            let filtered = products;
+            
+            if (category !== 'all') {
+                filtered = products.filter(p => p.category === category);
+            }
+            
+            document.getElementById('section-title').textContent = 
+                category === 'all' ? 'All Products' : 
+                category === 'sneakers' ? 'Sneakers Collection' : 'Jerseys Collection';
+            
+            renderProducts(filtered);
+        }
+
+        function filterBy(brand) {
+            let filtered = products;
+            
+            if (brand !== 'all') {
+                filtered = products.filter(p => p.brand.toLowerCase() === brand);
+            }
+            
+            renderProducts(filtered);
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            if (!query) {
+                renderProducts(products);
+                return;
+            }
+            
+            const filtered = products.filter(p => 
+                p.name.toLowerCase().includes(query) || 
+                p.brand.toLowerCase().includes(query)
+            );
+            
+            renderProducts(filtered);
+        }
+
+        // Initialize
+        window.onload = function() {
+            renderProducts(products);
+            
+            // Tailwind script already loaded
+            console.log("%c✅ KickThread Store Loaded Successfully!", "color: #eab308; font-size: 16px; font-weight: bold");
+        };
+    </script>
+</body>
+</html>
